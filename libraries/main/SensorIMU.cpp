@@ -79,6 +79,9 @@ String SensorIMU::printRollPitchHeading(void) {
   printString += " heading: ";
   printString += String(state.heading);
   printString += "[deg]";
+  // Adding X magnometer reading 
+  printString += " X Magnometer Reading: ";
+  printString += String(state.magX);
   return printString; 
 }
 
