@@ -44,7 +44,6 @@ void XYStateEstimator::updateState(imu_state_t * imu_state_p, gps_state_t * gps_
     else if (state.yaw > PI) {
         state.yaw -= (2 * PI);
     }
-
   }
   else{
     gpsAcquired = 0;
