@@ -113,7 +113,7 @@ String SurfaceControl::printString(void)
     printString += String(u);
     printString += ", u_L: ";
     printString += String(uL);
-    printString += ", \nu_R: ";
+    printString += ", u_R: ";
     printString += String(uR);
   }
   return printString;
