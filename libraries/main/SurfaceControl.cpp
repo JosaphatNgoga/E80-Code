@@ -52,9 +52,22 @@ void SurfaceControl::navigate(xy_state_t * state, gps_state_t * gps_state_p, int
     // You can access the x and y coordinates calculated in XYStateEstimator.cpp using state->x and state->y respectively
     // You can access the yaw calculated in XYStateEstimator.cpp using state->yaw
 
-    ///////////////////////////////////////////////////////////
-    // INSERT P CONTROL CODE HERE
-    ///////////////////////////////////////////////////////////
+    // LUCAS' P CONTROLLER
+    yaw = state->yaw;
+    yaw_des = atan2(y_des - state->y, x_des - state->x);
+    yaw_error = yaw_des - yaw;
+    u = Kp*yaw_error;
+    uR = avgPower + u;
+    uL = avgPower - u;
+    uR = uR*Kr; // modify K values in SurfaceControl.h
+    uL = uL*Kl;
+
+    // bound values to be 0 <= u <= 127
+    if (uR > 127) uR = 127;
+    else if (uR < 0) uR = 0;
+    if (uL > 127) uL = 127;
+    else if (uL < 0) uL = 0;
+
     
   }
   else {
