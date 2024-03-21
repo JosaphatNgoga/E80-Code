@@ -4,7 +4,7 @@
 clear;
 %clf;
 
-filenum = '003'; % file number for the data you want to read
+filenum = '005'; % file number for the data you want to read
 infofile = strcat('INF', filenum, '.TXT');
 datafile = strcat('LOG', filenum, '.BIN');
 
@@ -52,9 +52,14 @@ figure(1);
 clf;
 imshow(Campus_img);
 hold on
-
+ 
 % Read and Plot x,y positions
-x = 1:1:20;
-y = 1:3:60;
-plot(x, y, 'bo', 'MarkerSize', 10);
-title(' x and y positions during the walk around Parsons');
+scale_factor_x = 8.7;
+scale_factor_y = 7.8;
+x = (x .* scale_factor_x) + 400;
+y = (y .* scale_factor_y) + 350;
+plot(x, y, 'b*', 'MarkerSize', 10);
+title('Overlaid Plot Showing The Walk Around Parsons');
+xlabel('x coordinate');
+ylabel('y coordinate');
+hold off
