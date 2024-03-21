@@ -75,7 +75,7 @@ void SurfaceControl::navigate(xy_state_t *state, gps_state_t *gps_state_p, int c
 
     // bound values to be 0 <= u <= 127
     if (uR > 127)
-      uR = 127;
+      uR -= 127;
     else if (uR < 0)
       uR = 0;
     if (uL > 127)
@@ -103,12 +103,12 @@ String SurfaceControl::printString(void)
   else
   {
     printString += "SurfaceControl: ";
-    printString += "Yaw_Des: ";
-    printString += String(yaw_des * 180.0 / PI);
-    printString += "[deg], ";
-    printString += "Yaw: ";
-    printString += String(yaw * 180.0 / PI);
-    printString += "[deg], ";
+    // printString += "Yaw_Des: ";
+    // printString += String(yaw_des * 180.0 / PI);
+    // printString += "[deg], ";
+    // printString += "Yaw: ";
+    // printString += String(yaw * 180.0 / PI);
+    // printString += "[deg], ";
     printString += "u: ";
     printString += String(u);
     printString += ", u_L: ";
