@@ -33,7 +33,7 @@ disp("Rotate Motherboard into as many orientations as possible");
 %% Initialize Serial Port
 % Modify first argument to match the Teensy port under Tools tab of Arduino IDE
 % same baudrate as Teensy
-s = serial('/dev/tty.usbmodem120885801','BaudRate',115200);
+s = serial('/dev/cu.usbmodem131536701','BaudRate',115200);
 set(s,'InputBufferSize',bytesPerSample*numSamples);
 
 %% Read Data from IMU
@@ -52,7 +52,7 @@ for aquisition = 1:numAquisitions
         mz((aquisition-1)*numSamples + sample+1) = dat(3*sample+3);
     end
 end
-
+figure(4)
 %% Plot Raw Data
 max_mx = max(mx); min_mx = min(mx);
 max_my = max(my); min_my = min(my);
@@ -88,21 +88,21 @@ yGaussData = my*0.48828125;
 for i = 1:length(xGaussData)
     if xGaussData(i) == 0
       if yGaussData(i) < 0
-          D(i) = 90;
+          D(i) = pi/2;
       else
           D(i) = 0;
       end
     else
-        D(i) = arctan(yGaussData/xGaussData)*(180/pi);
+        D(i) = atan(yGaussData(i)/xGaussData(i));
     end
     if D(i) <0
-        D(i) = D(i) + 360;
-    elseif D(i)>360
-        D(i) = D(i) - 360;
+        D(i) = D(i) + 2*pi;
+    elseif D(i)>2*pi
+        D(i) = D(i) - 2*pi;
     end
 end
-
-t = 0 : 0.00000476 : 0.00000476*length(D);
+ 
+t = 0.00000476 : 0.00000476 : 0.00000476*length(D);
 plot(t, D);
 xlabel("Time (s)");
 ylabel("Heading (°)");
@@ -139,28 +139,28 @@ axis equal
 grid on
 
 %Plot Heading vs Time for calibrated data
-figure(3)
+figure(2)
 xGaussCal = mx_cal*0.48828125;
 yGaussCal = my_cal*0.48828125;
 
 for i = 1:length(xGaussCal)
     if xGaussCal(i) == 0
       if yGaussCal(i) < 0
-          D2(i) = 90;
+          D2(i) = pi/2;
       else
           D2(i) = 0;
       end
     else
-        D2(i) = arctan(yGaussCal/xGaussCal)*(180/pi);
+        D2(i) = atan(yGaussCal(i)/xGaussCal(i));
     end
     if D2(i) <0
-        D2(i) = D2(i) + 360;
-    elseif D2(i)>360
-        D2(i) = D2(i) - 360;
+        D2(i) = D2(i) + 2*pi;
+    elseif D2(i)>2*pi
+        D2(i) = D2(i) - 2*pi;
     end
 end
 
-t2 = 0 : 0.00000476 : 0.00000476*length(D2);
+t2 = 0.00000476 : 0.00000476 : 0.00000476*length(D2);
 plot(t2, D2);
 xlabel("Time (s)");
 ylabel("Heading (°)");
