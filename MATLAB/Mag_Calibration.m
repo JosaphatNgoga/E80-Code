@@ -33,7 +33,7 @@ disp("Rotate Motherboard into as many orientations as possible");
 %% Initialize Serial Port
 % Modify first argument to match the Teensy port under Tools tab of Arduino IDE
 % same baudrate as Teensy
-s = serial('/dev/tty.usbmodem120885801','BaudRate',115200);
+s = serial('/dev/cu.usbmodem131536701','BaudRate',115200);
 set(s,'InputBufferSize',bytesPerSample*numSamples);
 
 %% Read Data from IMU
@@ -52,13 +52,14 @@ for aquisition = 1:numAquisitions
         mz((aquisition-1)*numSamples + sample+1) = dat(3*sample+3);
     end
 end
-
+figure(4)
 %% Plot Raw Data
 max_mx = max(mx); min_mx = min(mx);
 max_my = max(my); min_my = min(my);
 max_mz = max(mz); min_mz = min(mz);
 
 figure(1)
+hold on;
 %{
 plot3([min_mx,max_mx],[0,0],[0,0],'r-','LineWidth',2);
 hold on
@@ -79,6 +80,33 @@ set(ah,'LineWidth',1);
 axis equal
 grid on
 
+%Plot Heading vs Time for uncalibrated data
+figure(2)
+xGaussData = mx*0.48828125;
+yGaussData = my*0.48828125;
+
+for i = 1:length(xGaussData)
+    if xGaussData(i) == 0
+      if yGaussData(i) < 0
+          D(i) = pi/2;
+      else
+          D(i) = 0;
+      end
+    else
+        D(i) = atan(yGaussData(i)/xGaussData(i));
+    end
+    if D(i) <0
+        D(i) = D(i) + 2*pi;
+    elseif D(i)>2*pi
+        D(i) = D(i) - 2*pi;
+    end
+end
+ 
+t = 0.00000476 : 0.00000476 : 0.00000476*length(D);
+plot(t, D);
+xlabel("Time (s)");
+ylabel("Heading (°)");
+
 %% Calculate Offsets and Soft Iron Matrix
 M = [mx,my,mz];
 [U,c] = MgnCalibration(M);
@@ -93,7 +121,7 @@ max_mx_cal = max(mx_cal); min_mx_cal = min(mx_cal);
 max_my_cal = max(my_cal); min_my_cal = min(my_cal);
 max_mz_cal = max(mz_cal); min_mz_cal = min(mz_cal);
 
-figure(2)
+figure(1)
 plot3([min_mx_cal,max_mx_cal],[0,0],[0,0],'r-','LineWidth',2);
 hold on
 plot3([0,0],[min_my_cal,max_my_cal],[0,0],'r-','LineWidth',2);
@@ -109,6 +137,33 @@ set(ah,'TitleFontSizeMultiplier',1.2);
 set(ah,'LineWidth',1);
 axis equal
 grid on
+
+%Plot Heading vs Time for calibrated data
+figure(2)
+xGaussCal = mx_cal*0.48828125;
+yGaussCal = my_cal*0.48828125;
+
+for i = 1:length(xGaussCal)
+    if xGaussCal(i) == 0
+      if yGaussCal(i) < 0
+          D2(i) = pi/2;
+      else
+          D2(i) = 0;
+      end
+    else
+        D2(i) = atan(yGaussCal(i)/xGaussCal(i));
+    end
+    if D2(i) <0
+        D2(i) = D2(i) + 2*pi;
+    elseif D2(i)>2*pi
+        D2(i) = D2(i) - 2*pi;
+    end
+end
+
+t2 = 0.00000476 : 0.00000476 : 0.00000476*length(D2);
+plot(t2, D2);
+xlabel("Time (s)");
+ylabel("Heading (°)");
 
 %% Display Offset Vector and Soft Iron Compensation Matrix
 disp('Offet Vector:');
