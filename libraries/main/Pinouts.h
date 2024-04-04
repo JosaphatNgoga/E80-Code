@@ -41,4 +41,10 @@
 // Depth Control
 #define PRESSURE_PIN 14 // Teensy pin A00
 
+// PhotoDiode
+#define DIODE_PIN 15 // Teensy pin A1
+
+// Hall Effect 
+#define HALLEFFECT_PIN 16 // Teensy pin A2
+
 #endif

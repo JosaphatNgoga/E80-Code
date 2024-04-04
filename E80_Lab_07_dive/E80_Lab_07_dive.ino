@@ -19,6 +19,8 @@ Authors:
 #include <SensorIMU.h>
 #include <XYStateEstimator.h>
 #include <ZStateEstimator.h>
+#include <PhotoDiode.h>
+#include <HallEffect.h>
 #include <ADCSampler.h>
 #include <ErrorFlagSampler.h>
 #include <ButtonSampler.h> // A template of a data source library
@@ -34,6 +36,8 @@ Authors:
 MotorDriver motor_driver;
 XYStateEstimator xy_state_estimator;
 ZStateEstimator z_state_estimator;
+PhotoDiode photo_diode;
+HallEffect hall_effect; 
 DepthControl depth_control;
 SensorGPS gps;
 Adafruit_GPS GPS(&UartSerial);
@@ -58,6 +62,8 @@ void setup() {
   logger.include(&gps);
   logger.include(&xy_state_estimator);
   logger.include(&z_state_estimator);
+  logger.include(&photo_diode);
+  logger.include(&hall_effect);
   logger.include(&depth_control);
   logger.include(&motor_driver);
   logger.include(&adc);
@@ -73,6 +79,8 @@ void setup() {
   gps.init(&GPS);
   motor_driver.init();
   led.init();
+  photo_diode.init();
+  hall_effect.init();
 
   int diveDelay = 0; // how long robot will stay at depth waypoint before continuing (ms)
 
@@ -92,6 +100,8 @@ void setup() {
   button_sampler.lastExecutionTime     = loopStartTime - LOOP_PERIOD + BUTTON_LOOP_OFFSET;
   xy_state_estimator.lastExecutionTime = loopStartTime - LOOP_PERIOD + XY_STATE_ESTIMATOR_LOOP_OFFSET;
   z_state_estimator.lastExecutionTime  = loopStartTime - LOOP_PERIOD + Z_STATE_ESTIMATOR_LOOP_OFFSET;
+  photo_diode.lastExecutionTime        = loopStartTime - LOOP_PERIOD + Z_STATE_ESTIMATOR_LOOP_OFFSET;  // Not sure if these are the right offsets
+  hall_effect.lastExecutionTime        = loopStartTime - LOOP_PERIOD + Z_STATE_ESTIMATOR_LOOP_OFFSET;
   depth_control.lastExecutionTime      = loopStartTime - LOOP_PERIOD + DEPTH_CONTROL_LOOP_OFFSET;
   logger.lastExecutionTime             = loopStartTime - LOOP_PERIOD + LOGGER_LOOP_OFFSET;
 
@@ -117,6 +127,8 @@ void loop() {
     printer.printValue(8,motor_driver.printState());
     printer.printValue(9,imu.printRollPitchHeading());        
     printer.printValue(10,imu.printAccels());
+    printer.printValue(11, photo_diode.printState());
+    printer.printValue(12, hall_effect.printState());
     printer.printToSerial();  // To stop printing, just comment this line out
   }
 
@@ -165,6 +177,16 @@ void loop() {
     EF_States[2] = 1;
   }
 
+  if ( currentTime-photo_diode.lastExecutionTime > LOOP_PERIOD ) {
+    photo_diode.lastExecutionTime = currentTime;
+    photo_diode.updateState(analogRead(DIODE_PIN));
+  }
+
+  if ( currentTime-hall_effect.lastExecutionTime > LOOP_PERIOD ) {
+    hall_effect.lastExecutionTime = currentTime;
+    hall_effect.updateState(analogRead(HALLEFFECT_PIN));
+  }
+
   if ( currentTime-button_sampler.lastExecutionTime > LOOP_PERIOD ) {
     button_sampler.lastExecutionTime = currentTime;
     button_sampler.updateState();
@@ -185,6 +207,8 @@ void loop() {
   if ( currentTime-z_state_estimator.lastExecutionTime > LOOP_PERIOD ) {
     z_state_estimator.lastExecutionTime = currentTime;
     z_state_estimator.updateState(analogRead(PRESSURE_PIN));
+    // z_state_estimator.updateStateDiode(analogRead(DIODE_PIN));
+    // z_state_estimator.updateStateHall(analogRead(HALLEFFECT_PIN));
   }
   
   if ( currentTime-led.lastExecutionTime > LOOP_PERIOD ) {
