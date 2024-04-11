@@ -35,10 +35,10 @@ void DepthControl::dive(z_state_t * state, int currentTime_in) {
   depth_error = depth_des - depth;
   uV = Kp * depth_error; 
   
-  if (uV > 200) {
-    uV = 200; 
-  } else if (uV < -200) {
-    uV = -200; 
+  if (uV > 75) {
+    uV = 75; 
+  } else if (uV < -75) {
+    uV = -75; 
   }
 
 
@@ -63,7 +63,7 @@ void DepthControl::surface(z_state_t * state) {
   }
   else { // not at surface yet
     atSurface = 0;
-    uV = -30; // go upward
+    uV = 50; // go upward
   }
   printer.printMessage(surfaceMessage,smTime);
 }
