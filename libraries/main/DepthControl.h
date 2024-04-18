@@ -14,20 +14,20 @@ public:
   DepthControl(void);
 
   // defines the waypoints used for Depth Control
-  void init(const int totalWayPoints_in, double * wayPoints_in, int diveDelay_in);
+  void init(const int totalWayPoints_in, double *wayPoints_in, int diveDelay_in);
 
   // sets the vertical motor effort using P-Control when diving
-  void dive(z_state_t * state, int currentTime_in);
+  void dive(z_state_t *state, int currentTime_in);
 
   // sets the vertical motor effort to surface
-  void surface(z_state_t * state);
+  void surface(z_state_t *state);
 
   String printString(void);
 
   String printWaypointUpdate(void);
 
   // from DataSource
-  size_t writeDataBytes(unsigned char * buffer, size_t idx);
+  size_t writeDataBytes(unsigned char *buffer, size_t idx);
 
   int lastExecutionTime = -1;
 
@@ -35,7 +35,7 @@ public:
   float depth_des;   // desired depth
   float depth;       // current depth
   float depth_error; // distance to waypoint
-  float Kp= 180.0;     // proportional control gain
+  float Kp = 1000.0; // proportional control gain
   float uV;          // vertical motor effort
 
   bool diveState = 1;
@@ -45,15 +45,14 @@ public:
   bool complete = 0;
 
   int totalWayPoints;
-  double * wayPoints;
+  double *wayPoints;
 
 private:
-
   // updates current waypoint if necessary
   void updatePoint(float z);
 
   int currentWayPoint = 0;
-  
+
   int diveDelay;
   int delayStartTime = 0;
   int currentTime;

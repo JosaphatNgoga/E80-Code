@@ -49,6 +49,8 @@ Logger logger;
 Printer printer;
 GPSLockLED led;
 
+
+
 // loop start recorder
 int loopStartTime;
 int currentTime;
@@ -90,6 +92,9 @@ void setup() {
   
   xy_state_estimator.init(); 
   z_state_estimator.init();
+  // Set motor pins to digital
+  pinMode(MOTOR_C_FORWARD, OUTPUT);
+  pinMode(MOTOR_C_REVERSE, OUTPUT);
 
   printer.printMessage("Starting main loop",10);
   loopStartTime = millis();
@@ -144,7 +149,18 @@ void loop() {
         depth_control.diveState = false; 
         depth_control.surfaceState = true;
       }
-      motor_driver.drive(0,0,depth_control.uV);
+      //motor_driver.drive(0,0,depth_control.uV);
+      if (depth_control.uV > 50){
+        digitalWrite(MOTOR_C_FORWARD, HIGH);
+        digitalWrite(MOTOR_C_REVERSE, LOW);
+        Serial.print("Hello");
+      } else if (depth_control.uV < -50){
+        digitalWrite(MOTOR_C_FORWARD, LOW);
+        digitalWrite(MOTOR_C_REVERSE, HIGH);
+      } else{
+        digitalWrite(MOTOR_C_FORWARD, LOW);
+        digitalWrite(MOTOR_C_REVERSE, LOW);
+      }
     }
     if ( depth_control.surfaceState ) {     // SURFACE STATE //
       if ( !depth_control.atSurface ) { 
@@ -153,7 +169,17 @@ void loop() {
       else if ( depth_control.complete ) { 
         delete[] depth_control.wayPoints;   // destroy depth waypoint array from the Heap
       }
-      motor_driver.drive(0,0,depth_control.uV);
+      //motor_driver.drive(0,0,depth_control.uV);
+      if (depth_control.uV > 50){
+        digitalWrite(MOTOR_C_FORWARD, HIGH);
+        digitalWrite(MOTOR_C_REVERSE, LOW);
+      } else if (depth_control.uV < -50){
+        digitalWrite(MOTOR_C_FORWARD, LOW);
+        digitalWrite(MOTOR_C_REVERSE, HIGH);
+      } else{
+        digitalWrite(MOTOR_C_FORWARD, LOW);
+        digitalWrite(MOTOR_C_REVERSE, LOW);
+      }
     }
   }
   
