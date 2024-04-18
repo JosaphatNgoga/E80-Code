@@ -22,6 +22,14 @@ void PhotoDiode::updateState(int diode_signal) {
 }
 
 
+void PhotoDiode::updateState2(int diode_signal2) {
+  float diode_voltage2 = (double)diode_signal2;
+  diode_voltage2 *= (3.3/1023);  // convert from Teensy units to Volts
+
+  String diodeMessage2 = "Photodiode Voltage 2: " + String(diode_voltage2);
+  printer.printMessage(diodeMessage2,20);
+}
+
 String PhotoDiode::printState(void) {
   String currentState = "";
   int decimals = 2;

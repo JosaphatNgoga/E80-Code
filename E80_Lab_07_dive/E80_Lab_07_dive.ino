@@ -144,7 +144,7 @@ void loop() {
         depth_control.diveState = false; 
         depth_control.surfaceState = true;
       }
-      motor_driver.drive(0,0,depth_control.uV);
+      motor_driver.drive(0,0,0);
     }
     if ( depth_control.surfaceState ) {     // SURFACE STATE //
       if ( !depth_control.atSurface ) { 
@@ -153,7 +153,7 @@ void loop() {
       else if ( depth_control.complete ) { 
         delete[] depth_control.wayPoints;   // destroy depth waypoint array from the Heap
       }
-      motor_driver.drive(0,0,depth_control.uV);
+      motor_driver.drive(0,0,0);
     }
   }
   
@@ -180,6 +180,7 @@ void loop() {
   if ( currentTime-photo_diode.lastExecutionTime > LOOP_PERIOD ) {
     photo_diode.lastExecutionTime = currentTime;
     photo_diode.updateState(analogRead(DIODE_PIN));
+    photo_diode.updateState2(analogRead(DIODE_PIN_2));
   }
 
   if ( currentTime-hall_effect.lastExecutionTime > LOOP_PERIOD ) {

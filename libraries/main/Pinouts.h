@@ -13,8 +13,8 @@
 #define MOTOR_B_DIRECTION 6 //IN1
 #define MOTOR_B_SPEED 5     //IN2
 // Motor C: pins 23,22 V
-#define MOTOR_C_DIRECTION 22 //IN1
-#define MOTOR_C_SPEED 23     //IN2
+#define MOTOR_C_DIRECTION 24 //IN1
+#define MOTOR_C_SPEED 25     //IN2
 // **********************************************************
 
 // ************ For Version 2.2 and earlier of the Motherboard
@@ -25,8 +25,8 @@
 #define MOTOR_B_FORWARD 5 //IN1
 #define MOTOR_B_REVERSE 6 //IN2
 // Motor C: pins 23,22 V
-#define MOTOR_C_FORWARD	23 //IN1
-#define MOTOR_C_REVERSE	22 //IN2
+#define MOTOR_C_FORWARD	24 //IN1
+#define MOTOR_C_REVERSE	25 //IN2
 // **********************************************************
 
 // Error Flags
@@ -43,6 +43,7 @@
 
 // PhotoDiode
 #define DIODE_PIN 15 // Teensy pin A1
+#define DIODE_PIN_2 17 // Teensy pin A3
 
 // Hall Effect 
 #define HALLEFFECT_PIN 14 // Teensy pin A0

@@ -25,7 +25,8 @@ public:
   // State Access
   diode_state state;
 
-  void updateState(int pressure_signal);
+  void updateState(int diode_signal);
+  void updateState2(int diode_signal2);
   String printState(void);
 
   // from DataSource

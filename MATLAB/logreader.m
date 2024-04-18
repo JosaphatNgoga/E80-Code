@@ -53,12 +53,18 @@ title("Hall Effect Sensor")
 
 
 figure(2)
+subplot(2,1,1);
 plot(double(A01) * (3.3/1023));
 title("Photodiode Sensor")
+subplot(2,1,2);
+plot(double(A03) * (3.3/1023));
 
 
 figure(3)
 plot(double(A02) * (3.3/1023));
 title("Pressure Sensor")
+
+
+
 
 
