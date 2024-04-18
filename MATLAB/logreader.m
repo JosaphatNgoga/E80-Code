@@ -1,10 +1,10 @@
 % logreader.m
 % Use this script to read data from your micro SD card
 
-clear;
+clear all;
 %clf;
 
-filenum = '003'; % file number for the data you want to read
+filenum = '067'; % file number for the data you want to read
 infofile = strcat('INF', filenum, '.TXT');
 datafile = strcat('LOG', filenum, '.BIN');
 
@@ -46,6 +46,25 @@ end
 fclose(fid);
 
 %% Process your data here
+figure(1)
+
+plot (double(A00) * (3.3/1023));
+title("Hall Effect Sensor")
+
+
+figure(2)
+subplot(2,1,1);
+plot(double(A01) * (3.3/1023));
+title("Photodiode Sensor")
+subplot(2,1,2);
+plot(double(A03) * (3.3/1023));
+
+
+figure(3)
+plot(double(A02) * (3.3/1023));
+title("Pressure Sensor")
+
+
 
 
 

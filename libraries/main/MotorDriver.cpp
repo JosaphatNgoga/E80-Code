@@ -38,10 +38,19 @@ void MotorDriver::apply(void)
   }
 
   // write this information to motors
-  for (int m = 0; m < NUM_MOTORS; m++) { // using pwmDir as 0 or 1
-    digitalWrite(motorPins[m][DIRECTION_PIN], pwmDir[m]);
-    analogWrite(motorPins[m][SPEED_PIN], pwmValues[m]);
+  if(pwmDir == 0){
+    analogWrite(MOTOR_C_FORWARD, pwmValues[2]);
+    analogWrite(MOTOR_C_REVERSE, 0);
+
   }
+  else{
+    analogWrite(MOTOR_C_FORWARD, 0);
+    analogWrite(MOTOR_C_REVERSE, pwmValues[2]);
+  }
+  // for (int m = 0; m < NUM_MOTORS; m++) { // using pwmDir as 0 or 1
+  //   digitalWrite(motorPins[m][DIRECTION_PIN], pwmDir[m]);
+  //   analogWrite(motorPins[m][SPEED_PIN], pwmValues[m]);
+  // }
 }
 
 void MotorDriver::drive(int motorA_power,int motorB_power,int motorC_power) {

@@ -1,31 +1,32 @@
-#ifndef __Z_STATE_ESTIMATOR_H__
-#define __Z_STATE_ESTIMATOR_H__
+#ifndef __PHOTO_DIODE_H__
+#define __PHOTO_DIODE_H__
 
 #include <Arduino.h>
 
 #include "DataSource.h"
 
 typedef struct {
-    float z = 0; // z position (depth) in globad frame [m]
-} z_state_t;
+    float l = 0; // are we calibrating now?
+} diode_state;
 
 /*
  * ZStateEstimator class keeps track of the robot's depth state,
  * incorperating measurements of the system outputs from the Pressure
  * Sensor, as well as the control inputs to the system
  */
-class ZStateEstimator : public DataSource
+class PhotoDiode : public DataSource
 {
 public:
-  ZStateEstimator(void);
+  PhotoDiode(void);
 
   // init
   void init(void);
 
   // State Access
-  z_state_t state;
+  diode_state state;
 
-  void updateState(int pressure_signal);
+  void updateState(int diode_signal);
+  void updateState2(int diode_signal2);
   String printState(void);
 
   // from DataSource
@@ -35,8 +36,8 @@ public:
 
 private:
   // set pressure sensor calibration slope and incercept below
-  const float depthCal_slope = -1.577;
-  const float depthCal_intercept = 4.6702;
+  // const float diodeCal_slope = -1.577;
+  // const float diodeCal_intercept = 4.6802;
 
 };
 

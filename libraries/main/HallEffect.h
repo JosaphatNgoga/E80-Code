@@ -1,31 +1,31 @@
-#ifndef __Z_STATE_ESTIMATOR_H__
-#define __Z_STATE_ESTIMATOR_H__
+#ifndef __HALL_EFFECT_H__
+#define __HALL_EFFECT_H__
 
 #include <Arduino.h>
 
 #include "DataSource.h"
 
 typedef struct {
-    float z = 0; // z position (depth) in globad frame [m]
-} z_state_t;
+    float h = 0; // state of the hall effect sensor
+} h_state;
 
 /*
  * ZStateEstimator class keeps track of the robot's depth state,
  * incorperating measurements of the system outputs from the Pressure
  * Sensor, as well as the control inputs to the system
  */
-class ZStateEstimator : public DataSource
+class HallEffect : public DataSource
 {
 public:
-  ZStateEstimator(void);
+  HallEffect(void);
 
   // init
   void init(void);
 
   // State Access
-  z_state_t state;
+  h_state state;
 
-  void updateState(int pressure_signal);
+  void updateState(int hallEffect_signal);
   String printState(void);
 
   // from DataSource
@@ -34,10 +34,7 @@ public:
   int lastExecutionTime = -1;
 
 private:
-  // set pressure sensor calibration slope and incercept below
-  const float depthCal_slope = -1.577;
-  const float depthCal_intercept = 4.6702;
-
+    // 
 };
 
 #endif
