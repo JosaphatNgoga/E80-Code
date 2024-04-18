@@ -87,7 +87,7 @@ void setup() {
   int diveDelay = 10000; // how long robot will stay at depth waypoint before continuing (ms)
 
   const int num_depth_waypoints = 12;
-  double depth_waypoints [] = {0, 0, 0, 0, 0.3048, 0.6096, 0.9144, 1.2192, 0, 0, 0, 0};  // listed as z0,z1,... etc.
+  double depth_waypoints [] = {0, 0, 0, 0, 0, .3048, 0.6096, 0.9144, 1.2192, 0, 0, 0, 0};  // listed as z0,z1,... etc.
   depth_control.init(num_depth_waypoints, depth_waypoints, diveDelay);
   
   xy_state_estimator.init(); 
@@ -151,12 +151,12 @@ void loop() {
       }
       //motor_driver.drive(0,0,depth_control.uV);
       if (depth_control.uV > 50){
-        digitalWrite(MOTOR_C_FORWARD, HIGH);
-        digitalWrite(MOTOR_C_REVERSE, LOW);
-        Serial.print("Hello");
-      } else if (depth_control.uV < -50){
         digitalWrite(MOTOR_C_FORWARD, LOW);
         digitalWrite(MOTOR_C_REVERSE, HIGH);
+        Serial.print("Hello");
+      } else if (depth_control.uV < -50){
+        digitalWrite(MOTOR_C_FORWARD, HIGH);
+        digitalWrite(MOTOR_C_REVERSE, LOW);
       } else{
         digitalWrite(MOTOR_C_FORWARD, LOW);
         digitalWrite(MOTOR_C_REVERSE, LOW);
