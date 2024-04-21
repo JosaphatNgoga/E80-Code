@@ -3,8 +3,15 @@
 
 clear all;
 %clf;
+% 119 - first run - looking good 9:30am - Marika
+%123 - 9:53 - second run - Emma
+% 124 - 10:05 - Lucas
+% 129 - 10:45 - Josaphat 
+% 136/7/8/9 - 4 runs in sequence ending at 12:52
 
-filenum = '084'; % file number for the data you want to read
+% 136 - 12:30 - Josaphat 
+% 
+filenum = '135'; % file number for the data you want to read
 infofile = strcat('INF', filenum, '.TXT');
 datafile = strcat('LOG', filenum, '.BIN');
 
@@ -64,7 +71,11 @@ figure(3)
 plot(double(A02) * (3.3/1023));
 title("Pressure Sensor")
 
-
+%Depth Plot
+figure(4)
+plot(depth)
+title('Depth Plot')
+ylabel('Depth [m]')
 
 
 
